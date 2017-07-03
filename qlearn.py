@@ -14,8 +14,10 @@ import numpy as np
 from collections import deque
 
 import json
-from keras import initializations
-from keras.initializations import normal, identity
+
+#Update from the original version to fit with Keras 2.0
+from keras import initializers
+from keras.initializers import normal, identity
 from keras.models import model_from_json
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
@@ -71,9 +73,10 @@ def trainNetwork(model,args):
     do_nothing[0] = 1
     x_t, r_0, terminal = game_state.frame_step(do_nothing)
 
-    x_t = skimage.color.rgb2gray(x_t)
-    x_t = skimage.transform.resize(x_t,(80,80))
-    x_t = skimage.exposure.rescale_intensity(x_t,out_range=(0,255))
+    #Update from original version to fit with skimage 0.13.0
+    x_t = color.rgb2gray(x_t)
+    x_t = transform.resize(x_t,(80,80))
+    x_t = exposure.rescale_intensity(x_t,out_range=(0,255))
 
     s_t = np.stack((x_t, x_t, x_t, x_t), axis=2)
     #print (s_t.shape)
